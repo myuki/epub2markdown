@@ -1,0 +1,5 @@
+*.epub
+
+/.gradle
+/.idea
+/build

@@ -3,7 +3,7 @@ package moe.uki.app.epub2markdown
 import nl.siegmann.epublib.domain.Resource
 import java.io.File
 
-class MarkdownOutputer(val text: Resource, val outputDirPath: String, val fileNameType: String) {
+class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameType: String) {
 	val outputDirFile = File(outputDirPath)
 	val htmlExtracter = HtmlExtracter(text.inputStream)
 

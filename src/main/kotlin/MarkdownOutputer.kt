@@ -9,8 +9,8 @@ class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameTy
 
 	//获取标题
 	val title: String = htmlExtracter.title
-	val titleNum: String = TextProcessor(title).getMatcher("\\d+")
-	val titleWithoutNum: String = TextProcessor(title).getRemoveMatcher("\\d+\\s*")
+	val titleNum: String = TextProcessor(title).getMatcher("(\\d+)((\\.)(\\d+))*")
+	val titleWithoutNum: String = TextProcessor(title).getRemoveMatcher("(\\d+)((\\.)(\\d+))*(\\s*)")
 
 	//配置输出文件
 	val outputFile: File

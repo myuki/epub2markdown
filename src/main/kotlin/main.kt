@@ -18,12 +18,12 @@ fun main(args: Array<String>) {
 	when (args.size) {
 		0 -> {
 			inputFilePath = "default.epub"
-			outputDirPath = "output"
+			outputDirPath = "output/"
 			outputFileNameType = "TitleNum"
 		}
 		1 -> {
 			inputFilePath = args[0]
-			outputDirPath = "output"
+			outputDirPath = "output/"
 			outputFileNameType = "TitleNum"
 		}
 		2 -> {
@@ -49,7 +49,7 @@ fun main(args: Array<String>) {
 	PathProcessor(File(outputDirPath)).checkDir()
 
 	for (chapter in contents) {
-		val markdownOutputer = MarkdownOutputer(chapter, outputDirPath + "/" + bookTitle + "/", outputFileNameType)
+		val markdownOutputer = MarkdownOutputer(chapter, outputDirPath + bookTitle + "/", outputFileNameType)
 
 		//判断输出文件是否存在
 		if (!markdownOutputer.outputFile.exists()) {

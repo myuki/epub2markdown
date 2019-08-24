@@ -7,14 +7,6 @@ import org.jsoup.select.Elements
 
 class HtmlExtracter(htmlStream: InputStream) {
 	val document: Document = Jsoup.parse(htmlStream, "UTF-8", "")
-	val titleElements: Elements = document.getElementsByTag("title")
-	val h1Elements: Elements = document.getElementsByTag("h1")
-	val h2Elements: Elements = document.getElementsByTag("h2")
-	val h3Elements: Elements = document.getElementsByTag("h3")
-	val h4Elements: Elements = document.getElementsByTag("h4")
-	val h5Elements: Elements = document.getElementsByTag("h5")
-	val h6Elements: Elements = document.getElementsByTag("h6")
-	val hElementsList = listOf(h1Elements, h2Elements, h3Elements, h4Elements, h5Elements, h6Elements)
 
 	val pElements: Elements = document.getElementsByTag("p")
 	val pText: List<String> = pElements.eachText()
@@ -22,32 +14,39 @@ class HtmlExtracter(htmlStream: InputStream) {
 
 	val title: String
 		get() {
-			//Title 不为空，返回 Title
-			if (titleElements.text() != "")
-				return titleElements.text()
-			else//Title 为空，返回 h1-h6 的第一个非空值
-				for (i in hElementsList) {
-					if (i.text() != "") return i.first().text()
-				}
-			//Title 与 h1-h6 均为空，取第一个 p
+			//Title selection priority: title->h1->h2->h3->h4->h5->h6->p(1st)
+			val title: String = document.getElementsByTag("title").text()
+			if (title != "") return title
+			val h1: String = document.getElementsByTag("h1").text()
+			if (h1 != "") return h1
+			val h2: String = document.getElementsByTag("h1").text()
+			if (h2 != "") return h2
+			val h3: String = document.getElementsByTag("h1").text()
+			if (h3 != "") return h3
+			val h4: String = document.getElementsByTag("h1").text()
+			if (h4 != "") return h4
+			val h5: String = document.getElementsByTag("h1").text()
+			if (h5 != "") return h5
+			val h6: String = document.getElementsByTag("h1").text()
+			if (h6 != "") return h6
+
 			pIndex = 1
 			return pText.first()
 		}
 
-	//取内容
+	//Get content in p tag
 	val content: String
 		get() {
 			val size: Int = pText.size
 			var content = ""
 
-			//判断内容是否为空
+			//Check if the p tag exists, splice all p tag as content when it exists
 			if (size != 0) {
 				for (i in pIndex..size - 2) {
 					content += pText.get(i) + "\n\n"
 				}
-				content += pText.get(size - 1) + "\n" //去除尾部多于换行
+				content += pText.get(size - 1) + "\n" //Remove the last \n in content
 			}
-
 			return content
 		}
 }

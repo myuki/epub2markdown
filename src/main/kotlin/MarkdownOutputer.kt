@@ -7,23 +7,27 @@ class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameTy
 	val outputDirFile = File(outputDirPath)
 	val htmlExtracter = HtmlExtracter(text.inputStream)
 
-	//获取标题
+	//Get title
 	val title: String = htmlExtracter.title
 	val titleNum: String = TextProcessor(title).getMatcher("(\\d+)((\\.)(\\d+))*")
 	val titleWithoutNum: String = TextProcessor(title).getRemoveMatcher("(\\d+)((\\.)(\\d+))*(\\s*)")
 
-	//配置输出文件
+	//Configurate output file
 	val outputFile: File
 	val fileName: String
 		get() {
-			//如果 Title 为空取 ID 为文件名
+			//If title is empty, use id as filename
 			if (title != "") {
-				//选择文件名类型
+				//Choose filename type
 				when (fileNameType) {
-					"Title" -> return title
-					"TitleNum" -> {
-						if (titleNum == "") return title
-						else return TextProcessor(titleNum).getRemoveMatcher("^0*") //去除首部 0
+					"title" -> return title
+					"titleNum" -> {
+						if (titleNum != "") return TextProcessor(titleNum).getRemoveMatcher("^0*") //Remove 0 in head
+						else return title
+					}
+					"titleWithoutNum" -> {
+						if (titleWithoutNum != "") return titleWithoutNum
+						else return title
 					}
 					else -> return text.id
 				}
@@ -31,8 +35,8 @@ class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameTy
 		}
 
 	init {
-		PathProcessor(outputDirFile).checkDir()   //若目录不存在则创建
-		outputFile = File(outputDirPath + fileName + ".md")  //创建输出文件
+		PathProcessor(outputDirFile).checkDir() //Create directory when it not exists
+		outputFile = File(outputDirPath + "/" + fileName + ".md")  //Create the output file
 	}
 
 	fun outputText(text: String) {

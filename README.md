@@ -1,6 +1,6 @@
 # epub2markdown
 
-A tool for extract EPUB file as Markdown file.
+A tool for extract EPUB file as Markdown(Text only) file.
 
 ## Dependencies
 

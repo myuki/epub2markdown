@@ -1,20 +1,19 @@
 package moe.uki.app.epub2markdown
 
 import java.io.InputStream
+
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
 
 class HtmlExtracter(htmlStream: InputStream) {
 	val document: Document = Jsoup.parse(htmlStream, "UTF-8", "")
 
-	val pElements: Elements = document.getElementsByTag("p")
-	val pText: List<String> = pElements.eachText()
+	val pText: List<String> = document.getElementsByTag("p").eachText()
 	var pIndex: Int = 0
 
 	val title: String
 		get() {
-			//Title selection priority: title->h1->h2->h3->h4->h5->h6->p(1st)
+			//Title selection priority: title->h1->h2->h3->h4->h5->h6->p(first)
 			val title: String = document.getElementsByTag("title").text()
 			if (title != "") return title
 			val h1: String = document.getElementsByTag("h1").text()
@@ -43,9 +42,9 @@ class HtmlExtracter(htmlStream: InputStream) {
 			//Check if the p tag exists, splice all p tag as content when it exists
 			if (size != 0) {
 				for (i in pIndex..size - 2) {
-					content += pText.get(i) + "\n\n"
+					content += "${pText.get(i)}\n\n"
 				}
-				content += pText.get(size - 1) + "\n" //Remove the last \n in content
+				content += "${pText.get(size - 1)}\n" //Remove the last \n in content
 			}
 			return content
 		}

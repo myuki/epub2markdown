@@ -1,12 +1,12 @@
 package moe.uki.app.epub2markdown
 
+import java.io.File
 import java.io.FileInputStream
 import kotlin.collections.List
 
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
-import java.io.File
 
 fun main(args: Array<String>) {
 	val inputFilePath: String
@@ -44,20 +44,20 @@ fun main(args: Array<String>) {
 	var bookTitle: String = book.metadata.firstTitle
 
 	//If the title in epub's metadata is empty, use filename as title
-	if (bookTitle == "") bookTitle = TextProcessor(inputFilePath).noneExtension
+	if (bookTitle == "") bookTitle = TextProcessor(inputFilePath).removeExtension()
 
 	//Check output directory
 	if (PathProcessor(File(outputDirPath)).checkDir()) {
 		for (chapter in contents) {
-			val markdownOutputer = MarkdownOutputer(chapter, outputDirPath + "/" + bookTitle, outputFileNameType)
+			val markdownOutputer = MarkdownOutputer(chapter, "${outputDirPath}/${bookTitle}", outputFileNameType)
 
 			//Check if the output file exists
 			if (!markdownOutputer.outputFile.exists()) {
-				markdownOutputer.outputText("# ")
-				markdownOutputer.outputText(markdownOutputer.titleWithoutNum)
-				markdownOutputer.outputText("\n\n" + "翻译: []()\n\n" + "原帖: <>\n\n" + "---\n\n")
+				markdownOutputer.outputText("# ${markdownOutputer.titleWithoutNum}")
+				markdownOutputer.outputText("\n\n翻译: []()\n\n原帖: <>\n\n---\n\n")
 				markdownOutputer.outputContent()
-			} else println("File: \"" + markdownOutputer.outputFile + "\" already exist")
+			} else println("File: \"${markdownOutputer.outputFile}\" already exist")
 		}
+		println("Finished the conversion, output Markdown file in \"${outputDirPath}/${bookTitle}\"")
 	}
 }

@@ -3,7 +3,7 @@ package moe.uki.app.epub2markdown
 import java.io.File
 
 class PathProcessor(val path: File) {
-	//Check if the directory exists, create directory when it not exists
+	//Check if the path exists, create directory when it not exists
 	fun checkDir(): Boolean {
 		if (!path.exists()) {
 			path.mkdir()

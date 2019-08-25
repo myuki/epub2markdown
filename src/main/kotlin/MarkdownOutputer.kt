@@ -1,16 +1,16 @@
 package moe.uki.app.epub2markdown
 
-import nl.siegmann.epublib.domain.Resource
 import java.io.File
+
+import nl.siegmann.epublib.domain.Resource
 
 class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameType: String) {
 	val outputDirFile = File(outputDirPath)
 	val htmlExtracter = HtmlExtracter(text.inputStream)
 
-	//Get title
 	val title: String = htmlExtracter.title
-	val titleNum: String = TextProcessor(title).getMatcher("(\\d+)((\\.)(\\d+))*")
-	val titleWithoutNum: String = TextProcessor(title).getRemoveMatcher("(\\d+)((\\.)(\\d+))*(\\s*)")
+	val titleNum: String = TextProcessor(title).getMatcher("^(\\d+)([\\.\\-_](\\d+))*")
+	val titleWithoutNum: String = TextProcessor(title).removeMatcher("^(\\d+)([\\.\\-_](\\d+))*(\\s)*")
 
 	//Configurate output file
 	val outputFile: File
@@ -22,7 +22,7 @@ class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameTy
 				when (fileNameType) {
 					"title" -> return title
 					"titleNum" -> {
-						if (titleNum != "") return TextProcessor(titleNum).getRemoveMatcher("^0*") //Remove 0 in head
+						if (titleNum != "") return TextProcessor(titleNum).removeMatcher("^0*") //Remove 0 in head
 						else return title
 					}
 					"titleWithoutNum" -> {
@@ -36,7 +36,7 @@ class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameTy
 
 	init {
 		PathProcessor(outputDirFile).checkDir() //Create directory when it not exists
-		outputFile = File(outputDirPath + "/" + fileName + ".md")  //Create the output file
+		outputFile = File("${outputDirPath}/${fileName}.md") //Create the output file
 	}
 
 	fun outputText(text: String) {
@@ -44,6 +44,6 @@ class MarkdownOutputer(val text: Resource, outputDirPath: String, val fileNameTy
 	}
 
 	fun outputContent() {
-		this.outputText(htmlExtracter.content)
+		outputText(htmlExtracter.content)
 	}
 }

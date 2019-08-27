@@ -11,9 +11,11 @@ class HtmlExtracter(htmlStream: InputStream) {
 	val pText: List<String> = document.getElementsByTag("p").eachText()
 	var pIndex: Int = 0
 
+	/**
+	 * Title selection priority: title->h1->h2->h3->h4->h5->h6->p(first)
+	 */
 	val title: String
 		get() {
-			//Title selection priority: title->h1->h2->h3->h4->h5->h6->p(first)
 			val title: String = document.getElementsByTag("title").text()
 			if (title != "") return title
 			val h1: String = document.getElementsByTag("h1").text()
@@ -33,18 +35,21 @@ class HtmlExtracter(htmlStream: InputStream) {
 			return pText.first()
 		}
 
-	//Get content in p tag
+	/**
+	 * Get content in p tag
+	 */
 	val content: String
 		get() {
 			val size: Int = pText.size
 			var content = ""
 
-			//Check if the p tag exists, splice all p tag as content when it exists
+			// Check if the p tag exists
 			if (size != 0) {
+				// Traversing all p tag, splice all p tag as content when it exists
 				for (i in pIndex..size - 2) {
 					content += "${pText.get(i)}\n\n"
 				}
-				content += "${pText.get(size - 1)}\n" //Remove the last \n in content
+				content += "${pText.get(size - 1)}\n" // Remove the last \n in content
 			}
 			return content
 		}

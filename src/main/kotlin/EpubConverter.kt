@@ -6,7 +6,7 @@ import nl.siegmann.epublib.epub.EpubReader
 import java.io.File
 import java.io.FileInputStream
 
-class EpubExtracter(inputFilePath: String) {
+class EpubConverter(inputFilePath: String) {
 	val book: Book = EpubReader().readEpub(FileInputStream(inputFilePath))
 	var bookTitle: String = book.metadata.firstTitle
 	val contents: List<Resource> = book.tableOfContents.allUniqueResources
@@ -19,7 +19,7 @@ class EpubExtracter(inputFilePath: String) {
 	/**
 	 * Filename type:"titleNum", "titleWithoutNum", "title"
 	 */
-	fun outputEachChapterAsMarkdown(
+	fun outputEachChapterTextOnly(
 		outputDirPath: String = "output",
 		outputFileNameType: String = "titleNum"
 	) {
@@ -30,18 +30,19 @@ class EpubExtracter(inputFilePath: String) {
 			// Traversing all resources of contents
 			for (chapter in contents) {
 				// Use book title as child directory
-				val markdownOutputer = MarkdownOutputer(chapter, ("${outputDirPath}/${bookTitle}"), outputFileNameType)
+				val markdownOutputer = MarkdownOutputer(chapter, ("$outputDirPath/$bookTitle"), outputFileNameType)
 
 				// Check if the output file exists
 				if (!markdownOutputer.outputFile.exists()) {
 					markdownOutputer.outputText("# ${markdownOutputer.titleWithoutNum}\n\n")
-					markdownOutputer.outputText(customText)
+					if (customText1 != "") markdownOutputer.outputText(customText1)
 					markdownOutputer.outputContent()
+					if (customText2 != "") markdownOutputer.outputText(customText2)
 				} else println("File: \"${markdownOutputer.outputFile}\" already exist")
 			}
 		}
 		val endTime: Long = System.currentTimeMillis() - startTime // Count runing time
 		println("Finished the conversion in ${endTime.toFloat() / 1000}s")
-		println("Output Markdown file in \"${outputDirPath}/${bookTitle}\"")
+		println("Output Markdown file in \"$outputDirPath/$bookTitle\"")
 	}
 }

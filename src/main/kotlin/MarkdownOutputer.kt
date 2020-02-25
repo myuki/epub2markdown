@@ -36,7 +36,7 @@ class MarkdownOutputer(val resource: Resource, outputDirPath: String, val fileNa
 
 	init {
 		PathProcessor(outputDirFile).checkDir() // Create directory when it not exists
-		outputFile = File("${outputDirPath}/${fileName}.md") // Create the output file
+		outputFile = File("$outputDirPath/$fileName.md") // Create the output file
 	}
 
 	fun outputText(text: String) {

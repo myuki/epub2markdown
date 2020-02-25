@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'moe.uki.app'
-version '0.0.2-Dev'
+version '0.0.3-Dev'
 
 mainClassName = 'moe.uki.app.epub2markdown.MainKt'
 targetCompatibility = 12
@@ -31,5 +31,4 @@ dependencies {
 		exclude group: 'xmlpull'
 	}
 	implementation "org.jsoup:jsoup:+"
-	testCompile group: 'junit', name: 'junit', version: '4.12'
 }

@@ -4,8 +4,8 @@ A tool for extract EPUB file as Markdown(Text only) file.
 
 ## Dependencies
 
-* [epublib](https://github.com/psiegman/epublib)
-* [jsoup](https://github.com/jhy/jsoup)
+* [epublib](https://github.com/psiegman/epublib) ([LGPLv3 licensed](http://www.siegmann.nl/epublib/license))
+* [jsoup](https://github.com/jhy/jsoup) ([MIT licensed](https://github.com/jhy/jsoup/blob/master/LICENSE))
 
 ## License
 

@@ -1,6 +1,6 @@
 plugins {
   java
-  kotlin("jvm") version "1.3.72"
+  kotlin("jvm") version "1.4.31"
   application
 }
 
@@ -16,9 +16,8 @@ repositories {
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
-  implementation("nl.siegmann.epublib:epublib-core:+")
-  implementation("org.jsoup:jsoup:+")
-  implementation("com.vladsch.flexmark:flexmark-html2md-converter:+")
+  implementation("nl.siegmann.epublib:epublib-core:3.1")
+  implementation("org.jsoup:jsoup:1.13.1")
 }
 
 java {
@@ -35,4 +34,3 @@ tasks {
 application {
   mainClassName = "moe.uki.app.epub2markdown.MainKt"
 }
-
